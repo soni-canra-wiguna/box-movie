@@ -1,0 +1,118 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+html::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+html {
+  color: white;
+  scroll-behavior: smooth !important;
+}
+
+body {
+  background-color: rgb(16, 16, 16);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  background-size: 40px 40px;
+
+  /* grid background */
+  background-image: linear-gradient(#80808010 1px, transparent 1px),
+    linear-gradient(90deg, #80808010 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.grad {
+  background: rgb(16, 16, 16);
+  background: linear-gradient(90deg, rgba(16, 16, 16) 0%, rgba(16, 16, 16, 0.4) 50%, rgba(16, 16, 16, 0) 100%);
+}
+
+.active {
+  @apply text-teal-600
+}
+
+.border-grad {
+  border-image: linear-gradient(to right, var(--tw-gradient-colors)) 60;
+}
+
+.hover_icon {
+  fill: rgb(13, 148, 136);
+}
+
+.actives:hover {
+  transform: rotate(180deg)
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.mxuy {
+  margin: 0 auto;
+}
+
+.swiper-slide {
+  /* @apply aspect-video mx-[10px] flex justify-center items-center */
+  /* min-width: 300px;
+  width: 300px;
+  height: 180px;
+  margin: 0 10px;
+  text-align: center;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center; */
+}
+
+/* swiper end */
+
+.moviecard {
+  position: relative;
+  transition: transform 400ms;
+}
+
+.containermoviecard:focus-within .moviecard,
+.containermoviecard:hover .moviecard {
+  transform: translateX(-5%);
+}
+
+.moviecard:focus~.moviecard,
+.moviecard:hover~.moviecard {
+  transform: translateX(5%);
+}
+
+.containermoviecard .moviecard:focus,
+.containermoviecard .moviecard:hover {
+  transform: scale(1.1);
+  z-index: 20;
+}
+
+.shad {
+  text-shadow: black 1px 0 10px;
+}
+
+.fixxx {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.video-wrapper {
+  position: relative;
+  padding-top: 56.25%;
+  /* 9 / 16 * 100 (aspek rasio 16:9) */
+  overflow: hidden;
+}
+
+.react-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
