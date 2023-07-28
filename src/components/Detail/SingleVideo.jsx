@@ -6,6 +6,7 @@ import { cancel } from "../../assets/svg/Index"
 import { motion } from "framer-motion"
 import { toast, ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
+import { ThreeDots } from "react-loader-spinner"
 
 const SingleVideo = ({ type, id, detail, setIsActive }) => {
   const { data: getKeyVideo, isLoading: singleLoadVideo } = useQuery({
@@ -48,11 +49,24 @@ const SingleVideo = ({ type, id, detail, setIsActive }) => {
     alert("video sedang di muat")
   }
 
-  if (singleLoadVideo) {
-    return <h1>loading....</h1>
-  }
-
   const trailerUrl = `https://www.youtube.com/watch?v=${getKeyVideo}`
+
+  if (singleLoadVideo) {
+    return (
+      <div className="flex items-center justify-center">
+        <ThreeDots
+          height="30"
+          width="30"
+          radius="9"
+          color="blue"
+          ariaLabel="three-dots-loading"
+          wrapperStyle={{}}
+          wrapperClassName=""
+          visible={true}
+        />
+      </div>
+    )
+  }
   return (
     <>
       <div className="fixxx fixed z-[50] aspect-video w-[380px] max-w-5xl flex-col sm:w-[480px] md:w-[768px] lg:w-[65rem]">

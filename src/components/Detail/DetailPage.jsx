@@ -10,6 +10,7 @@ import { VscDebugPause } from "react-icons/vsc"
 import { Keyword } from "./Keyword"
 import { motion } from "framer-motion"
 import Recomendation from "./Recomendation"
+import { ThreeDots } from "react-loader-spinner"
 
 const DetailPage = () => {
   const { type, id } = useParams()
@@ -119,13 +120,25 @@ const DetailPage = () => {
 
   // loading query
   if (isLoading) {
-    return <div>loading....</div>
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <ThreeDots
+          height="50"
+          width="50"
+          radius="9"
+          color="white"
+          ariaLabel="three-dots-loading"
+          wrapperClassName=""
+          visible={true}
+        />
+      </div>
+    )
   }
 
   return (
     <>
-      <div className="relative mt-[70px] flex h-screen w-full flex-col items-center justify-center px-10 md:mt-0 md:px-20 lg:px-60">
-        <div className="absolute bottom-0 -z-[49] hidden h-full w-full bg-gradient-to-t from-[#111111]/90 md:block"></div>
+      <div className="relative mt-[70px] flex h-screen w-full flex-col items-center justify-center px-10 md:px-20 lg:mt-0 lg:px-60">
+        <div className="absolute bottom-0 -z-[49] hidden h-[20%] w-full bg-gradient-to-t from-[#111111]/90 sm:h-[40%] md:block md:h-[60%] lg:h-full"></div>
         <div className="absolute inset-0 -z-50 h-full w-full">
           <img
             className=" h-[20%] w-full object-cover object-center brightness-50 selection:bg-transparent sm:h-[40%] md:h-[60%] md:brightness-75 lg:h-full"
