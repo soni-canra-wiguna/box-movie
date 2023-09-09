@@ -1,27 +1,56 @@
-import React, { Suspense } from "react"
+import React from "react"
 import { Routes, Route } from "react-router-dom"
 import Home from "./pages/home/Home"
 import NotFound from "./pages/NotFound"
-// import MainLayout from "./layout/MainLayout"
-const MainLayout = React.lazy(() => import("./layout/MainLayout"))
 import PageTv from "./pages/tv/PageTv"
 import PageMovie from "./pages/movie/PageMovie"
 import DetailPage from "./components/Detail/DetailPage"
-import LoadingAnimation from "./components/LoadingAnimation"
+import MainLayout from "./layout/MainLayout"
+import {
+  SignedOut,
+  ClerkProvider,
+  SignedIn,
+  RedirectToSignIn,
+} from "@clerk/clerk-react"
+import { useNavigate } from "react-router-dom"
+import { Sign, Up } from "./clerk/Auth"
+import ProfilePage from "./pages/ProfilePage"
+import WatchlistProvider from "./context/WatchlistContext"
 
-const App = () => {
+const publishKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
+
+function App() {
+  const navigate = useNavigate()
+
   return (
-    <Suspense fallback={<LoadingAnimation />}>
+    <ClerkProvider publishableKey={publishKey} navigate={(to) => navigate(to)}>
       <MainLayout>
-        <Routes>
-          <Route path="/" index element={<Home />} />
-          <Route path="/movie" element={<PageMovie />} />
-          <Route path="/tv" element={<PageTv />} />
-          <Route path="/:type/:id" element={<DetailPage />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <WatchlistProvider>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  <SignedIn>
+                    <Home />
+                  </SignedIn>
+                </>
+              }
+            />
+            <Route path="/sign-in/*" routing="path" element={<Sign />} />
+            <Route path="/sign-up/*" routing="path" element={<Up />} />
+            <Route path="/movie" element={<PageMovie />} />
+            <Route path="/tv" element={<PageTv />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/:type/:id" element={<DetailPage />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </WatchlistProvider>
       </MainLayout>
-    </Suspense>
+      <SignedOut>
+        <RedirectToSignIn />
+      </SignedOut>
+    </ClerkProvider>
   )
 }
 

@@ -6,7 +6,6 @@ import { BrowserRouter as Router } from "react-router-dom"
 import AOS from "aos"
 import "aos/dist/aos.css"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import 'react-loading-skeleton/dist/skeleton.css'
 
 const client = new QueryClient({
   defaultOptions: {
@@ -22,11 +21,11 @@ AOS.init()
 AOS.refresh()
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <QueryClientProvider client={client}>
-      <Router>
-        <App />
-      </Router>
-    </QueryClientProvider>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <QueryClientProvider client={client}>
+    <Router>
+      <App />
+    </Router>
+  </QueryClientProvider>
+  // </React.StrictMode>
 )

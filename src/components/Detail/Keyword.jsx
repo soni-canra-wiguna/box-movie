@@ -2,9 +2,6 @@ import axios from "axios"
 import React from "react"
 import { useQuery } from "@tanstack/react-query"
 import { API_KEY, baseUrl, params } from "../../utils/Instance"
-import Skeleton from "react-loading-skeleton"
-import "react-loading-skeleton/dist/skeleton.css"
-import { motion } from "framer-motion"
 
 export const Keyword = ({ type, id }) => {
   const { data: getKeyword, isLoadKeyword } = useQuery({
@@ -29,15 +26,20 @@ export const Keyword = ({ type, id }) => {
   }
 
   return (
-    <div className="mt-8 flex w-full flex-wrap items-center justify-start capitalize">
-      {getKeyword?.map((word) => (
-        <span
-          key={word?.id}
-          className="mb-2 mr-2 whitespace-nowrap rounded-md border border-gray-200/20 bg-black/30 px-2.5 py-1.5 text-sm text-white/90"
-        >
-          {word?.name || word?.title}
-        </span>
-      ))}
+    <div className="mt-8 flex w-full flex-wrap items-center justify-start px-2 capitalize md:px-0">
+      <span className="mb-2 mr-2 text-white/70">keywoard :</span>
+      {getKeyword?.length > 0 ? (
+        getKeyword?.map((word) => (
+          <span
+            key={word?.id}
+            className="mb-2 mr-2 cursor-default whitespace-nowrap rounded-md border border-gray-200/20 bg-black/30 px-2.5 py-1.5 text-xs text-white/90 hover:bg-black/50 md:text-sm"
+          >
+            {word?.name || word?.title}
+          </span>
+        ))
+      ) : (
+        <span className="mb-1.5">-</span>
+      )}
     </div>
   )
 }

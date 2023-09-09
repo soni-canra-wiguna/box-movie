@@ -5,22 +5,45 @@ import { useParams } from "react-router-dom"
 import SingleVideo from "./SingleVideo"
 import { API_KEY, params } from "../../utils/Instance"
 import { Button } from "../Button"
-import { BsFillPlayFill } from "react-icons/bs"
 import { VscDebugPause } from "react-icons/vsc"
 import { Keyword } from "./Keyword"
 import { motion } from "framer-motion"
 import Recomendation from "./Recomendation"
-import { ThreeDots } from "react-loader-spinner"
+import { useFormatDate } from "../../utils/formattedDate"
+import Image from "../UI/Image"
+import { LoadingDetail } from "../Loading"
+import useScrollHidden from "../../utils/useScrollHidden"
+import { bgGradientHover } from "../../utils/gradient"
+import { useWishlist } from "../../context/WatchlistContext"
+import {
+  BsBookmarkCheckFill,
+  BsBookmarkPlusFill,
+  BsFillPlayFill,
+} from "react-icons/bs"
 
 const DetailPage = () => {
   const { type, id } = useParams()
-  const [isActive, setIsActive] = useState(false)
+  const [loadMaxOverview, setLoadMaxOverView] = useState(false)
   const [rateColor, setRateColor] = useState("")
+  const [watchlistButton, setWatchlistButton] = useState(() => {
+    const localStorageKey = `wishlist_${id}`
+    const localWishlist = localStorage.getItem(localStorageKey)
+    return localWishlist ? JSON.parse(localWishlist) : false
+  })
 
-  const handleClick = () => {
-    setIsActive(!isActive)
+  const { isActive, setIsActive, handleClick } = useScrollHidden()
+  const { addToWatchlist, wishlist } = useWishlist()
+
+  // handle addwatchlist
+  const handleAddWishlist = (detail) => {
+    setWatchlistButton(!watchlistButton)
+    addToWatchlist(detail)
+
+    const localStorageKey = `wishlist_${id}`
+    localStorage.setItem(localStorageKey, JSON.stringify(!watchlistButton))
   }
 
+  //fetch data
   const { data: detail, isLoading } = useQuery({
     queryKey: ["detail movie", type, id],
     queryFn: async () => {
@@ -33,8 +56,6 @@ const DetailPage = () => {
     cacheTime: 40 * (1000 * 60),
     staleTime: 25 * (1000 * 60),
   })
-
-  console.log(detail)
 
   // get rating
   useEffect(() => {
@@ -57,34 +78,8 @@ const DetailPage = () => {
   const formattedCompanny = producttionCompanies?.join(", ")
 
   // change format date, 2023-04-04 to 04 april 2023
-  function formatDate(inputDate) {
-    const months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ]
-    if (!inputDate) {
-      return "Tanggal tidak tersedia"
-    }
-
-    const dateParts = inputDate.split("-")
-    const day = dateParts[2]
-    const month = months[Number(dateParts[1]) - 1]
-    const year = dateParts[0]
-
-    return `${day} ${month} ${year}`
-  }
   const inputDate = detail?.release_date || detail?.first_air_date
-  const formattedDate = formatDate(inputDate)
+  const formattedDate = useFormatDate(inputDate)
 
   // change runtime?duration to 0h 0min
   function formatTime(minutes) {
@@ -115,55 +110,41 @@ const DetailPage = () => {
       </>
     )
   }
-  const runtime = detail?.runtime || detail?.episode_run_time
+  const runtime = detail?.runtime || detail?.episode_run_time || null
   const formattedRuntime = formatTime(runtime)
 
   // loading query
   if (isLoading) {
-    return (
-      <div className="flex h-screen w-full items-center justify-center">
-        <ThreeDots
-          height="50"
-          width="50"
-          radius="9"
-          color="white"
-          ariaLabel="three-dots-loading"
-          wrapperClassName=""
-          visible={true}
-        />
-      </div>
-    )
+    return <LoadingDetail />
   }
 
   return (
     <>
-      <div className="relative mt-[70px] flex h-screen w-full flex-col items-center justify-center px-10 md:px-20 lg:mt-0 lg:px-60">
-        <div className="absolute bottom-0 -z-[49] hidden h-[20%] w-full bg-gradient-to-t from-[#111111]/90 sm:h-[40%] md:block md:h-[60%] lg:h-full"></div>
+      <div className="relative mt-[70px] flex h-auto w-full flex-col items-center justify-center sm:px-6 md:mt-0 md:h-screen lg:px-24 xl:px-48 2xl:px-60 ">
+        <div className="absolute bottom-0 -z-[49] hidden h-[30%] w-full bg-gradient-to-t from-[#111111]/90 sm:h-[35%] md:block md:h-[60%] lg:h-full"></div>
         <div className="absolute inset-0 -z-50 h-full w-full">
-          <img
-            className=" h-[20%] w-full object-cover object-center brightness-50 selection:bg-transparent sm:h-[40%] md:h-[60%] md:brightness-75 lg:h-full"
+          <Image
+            className="h-[20%] w-full object-cover object-center brightness-50 selection:bg-transparent sm:h-[25%] md:h-full md:brightness-75"
             src={`https://image.tmdb.org/t/p/original${detail.backdrop_path}`}
             alt={detail.title}
-            loading="lazy"
           />
         </div>
         {/* ===========detail start========== */}
-        <div className="relative z-40 mt-8 flex w-full flex-row justify-between space-x-16">
-          <div className="mt-1 flex w-[180px] min-w-[180px] max-w-[180px] flex-col space-y-4">
-            <div className="h-[280px] w-full overflow-hidden rounded-md selection:bg-transparent">
-              <img
+        <div className="relative z-40 flex w-full flex-col items-center justify-between overflow-hidden md:mt-8 md:flex-row md:space-x-10 lg:space-x-16">
+          <div className="mt-8 flex w-[180px] min-w-[180px] max-w-[180px] flex-col space-y-4 md:mt-1">
+            <div className="shadow-card__detail relative h-[280px] w-full overflow-hidden rounded-md border border-gray-400/10 selection:bg-transparent">
+              <Image
                 src={`https://image.tmdb.org/t/p/w500${detail.poster_path}`}
                 alt={detail.title || detail.name}
-                title={detail.title || detail.name}
+                title=""
                 className="h-full w-full object-cover object-center"
-                loading="lazy"
               />
             </div>
             <div>
               <motion.span whileTap={{ scale: 0.9 }}>
                 <Button
                   onClick={handleClick}
-                  className="flex w-full items-center justify-between border border-gray-400 from-blue-600 to-teal-600 px-4 py-2 capitalize hover:border-black/0 hover:bg-gradient-to-r"
+                  className={`${bgGradientHover} flex w-full items-center justify-between border border-gray-400 px-4 py-2 capitalize hover:border-black/0`}
                 >
                   <span>trailer</span>{" "}
                   {!isActive ? (
@@ -177,16 +158,16 @@ const DetailPage = () => {
                 <SingleVideo
                   type={type}
                   id={id}
-                  detail={detail}
+                  name={detail.title || detail.name}
                   setIsActive={setIsActive}
                 />
               )}
             </div>
           </div>
-          <div className="flex w-full flex-col space-y-1">
-            <h1 className="text-3xl font-bold text-red-600">
+          <div className="flex h-full w-full flex-col space-y-1 px-2 pt-7 md:px-0 md:pt-0">
+            <h1 className="text-xl font-bold text-red-600 md:text-3xl">
               {detail.title || detail.name}{" "}
-              <span className="text-2xl font-medium text-white">
+              <span className="text-lg font-medium text-white md:text-2xl">
                 (
                 {detail.release_date?.substring(0, 4) ||
                   detail.first_air_date?.substring(0, 4) ||
@@ -201,10 +182,29 @@ const DetailPage = () => {
                 <span>{detail.original_name || detail.name}</span>
               )}
             </h5>
-            <p className="white text-base leading-5 text-gray-200">
-              {detail.overview}
+            {/* const [loadMaxOverview, setLoadMaxOverView] = useState(false) */}
+            {/* button wishlist in here */}
+            <p
+              className={`white hidden md:block ${
+                detail?.overview.length <= 350 ? "" : "h-[115px]"
+              } overflow-y-scroll py-1 text-sm leading-5 text-gray-200 scrollbar-hide md:text-base`}
+            >
+              {loadMaxOverview
+                ? detail.overview
+                : detail.overview.slice(0, 350)}{" "}
+              <button
+                className={`rounded-md border ${
+                  detail?.overview.length <= 350 ? "hidden" : "inline-block"
+                } border-white/40 bg-black/30 px-2 py-1 text-xs hover:bg-black/40`}
+                onClick={() => setLoadMaxOverView(!loadMaxOverview)}
+              >
+                {loadMaxOverview ? "load less" : "load more..."}
+              </button>
             </p>
-            <section className="flex flex-col pt-3 text-sm capitalize tracking-wide">
+            <p className="block py-1 text-sm leading-5 text-gray-200/90 md:hidden">
+              {detail?.overview}
+            </p>
+            <section className="flex flex-col py-2 text-sm capitalize tracking-wide">
               <h5 className="text-white/70">
                 type : <span className="font-medium text-white">{type}</span>
               </h5>
@@ -253,10 +253,32 @@ const DetailPage = () => {
               </h5>
               <h5 className="text-white/70">
                 Studio & companies :{" "}
-                <span className="font-medium text-white">
+                <span className="font-medium text-white no-underline">
                   {formattedCompanny || "-"}
                 </span>
               </h5>
+            </section>
+            {/* watchlist button */}
+            <section className="flex space-x-2 selection:bg-transparent">
+              {watchlistButton ? (
+                <button disabled={true}>
+                  <BsBookmarkCheckFill
+                    title="watchlist was added"
+                    className="h-6 w-6 text-green-500"
+                  />
+                </button>
+              ) : (
+                <BsBookmarkPlusFill
+                  title="add to watch list"
+                  onClick={() => {
+                    handleAddWishlist(detail)
+                  }}
+                  className=" h-6 w-6 cursor-pointer text-white"
+                />
+              )}
+              <h1 className="mt-0.5 text-sm capitalize text-gray-200">
+                {watchlistButton ? "Added to Watchlist" : "add to watchlist"}
+              </h1>
             </section>
           </div>
         </div>

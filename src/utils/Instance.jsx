@@ -2,6 +2,8 @@ import axios from "axios"
 
 export const baseUrl = import.meta.env.VITE_BASE_URL
 export const API_KEY = import.meta.env.API_KEY
+export const clerk_Key = import.meta.env.VITE_CLERK_KEY
+
 const token = `Bearer ${import.meta.env.VITE_TOKEN_APP}`
 const url = import.meta.env.VITE_BASE_URL
 const apiKey = import.meta.env.VITE_API_KEY
@@ -28,6 +30,12 @@ export const type = {
 }
 
 export const requests = {
+  //get all movie
+  movieList: `${url}/discover/movie?api_key=${apiKey}&page=`,
+
+  // get all tv
+  tvList: `${url}/discover/tv?api_key=${apiKey}&page=`,
+
   // movie
   movieNowPlaying: `${url}/movie/now_playing?api_key=${apiKey}&language=en-US`,
   movieTrending: `${url}/trending/movie/day?api_key=${apiKey}&language=en-US`,
@@ -58,3 +66,6 @@ export const requests = {
 // keywoaard
 
 // https://api.themoviedb.org/3/movie/{movie_id}/keywords
+
+// search bersarkan genre
+// `https://api.themoviedb.org/3/discover/movie?api_key=08d7d48a7c08409efd8da23c5555343d&with_genres=

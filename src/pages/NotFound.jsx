@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { FidgetSpinner } from "react-loader-spinner"
 import { Button } from "../components/Button"
 import { FiArrowUpRight } from "react-icons/fi"
+import { bgGradientHover } from "../utils/gradient"
 
 const NotFound = () => {
   const navigate = useNavigate()
@@ -32,7 +33,7 @@ const NotFound = () => {
       <div className="mx-auto ">
         <Button
           onClick={home}
-          className="mt-5 flex h-12 w-40 items-center justify-center gap-2 rounded-md border border-slate-400/30 from-blue-600 to-teal-600 ease-in-out hover:border-black hover:bg-gradient-to-r hover:text-black"
+          className={`${bgGradientHover} mt-5 flex h-12 w-40 items-center justify-center gap-2 rounded-md border border-slate-400/30 ease-in-out hover:border-black hover:text-black`}
         >
           Back to Home <FiArrowUpRight />
         </Button>

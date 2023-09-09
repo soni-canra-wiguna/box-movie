@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import axios from "axios"
 import { baseUrl, params, lang } from "./Instance"
 
+// using react
 export const useFetch = (endpoint, page) => {
   const [data, setData] = useState([]) //general
   const [stackData, setStackData] = useState([]) // for load more
@@ -30,3 +31,11 @@ export const useFetch = (endpoint, page) => {
 
   return { data, stackData, isLoading }
 }
+
+// using react Query(tanstack query)
+
+// const {data, isLoading, andMore...} = useQuery({
+//   queryKey: ["param 1",param2],
+//   queryFn: ()=> {}
+// })
+// untuk info lebih lengkap cari aja documntationnya di tanstackquery.com (kalo gasalah)

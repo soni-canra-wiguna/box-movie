@@ -2,26 +2,27 @@ import React from "react"
 import { box } from "../assets/svg/Index"
 import { motion } from "framer-motion"
 import { Link } from "react-router-dom"
+import { textGradient } from "../utils/gradient"
 
 const Logo = () => {
   return (
-    <div className="flex items-center justify-center gap-2 md:mr-2 lg:mr-5">
-      <motion.div whileTap={{ scale: 0.9 }} className="cursor-pointer">
+    <motion.div
+      whileTap={{ scale: 0.98 }}
+      className="flex items-center justify-center gap-2 md:mr-2 lg:mr-8"
+    >
+      <div whileTap={{ scale: 0.9 }} className="cursor-pointer">
         <Link to="/">
           <img src={box} alt="film" className="w-10" />
         </Link>
-      </motion.div>
+      </div>
       <div className="cursor-pointer">
-        <motion.h2 whileTap={{ scale: 0.9 }} className="text-3xl font-bold">
-          <Link
-            to="/"
-            className="bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text font-poppins text-transparent"
-          >
+        <h2 whileTap={{ scale: 0.9 }} className="text-3xl font-bold">
+          <Link to="/" className={`${textGradient}`}>
             BM
           </Link>{" "}
-        </motion.h2>
+        </h2>
       </div>
-    </div>
+    </motion.div>
   )
 }
 

@@ -3,8 +3,10 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     screens: {
+      esm: "390px",
       sm: "480px",
-      xmd: "560px",
+      xmd: "540px",
+      "2xmd": "640px",
       md: "768px",
       lg: "1024px",
       xl: "1200px",
@@ -32,6 +34,11 @@ export default {
           "rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px",
         sidebar3:
           "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;",
+      },
+      keyframes: {
+        shimmer: {
+          "100%": { transform: "translateX(100%)" },
+        },
       },
     },
   },
