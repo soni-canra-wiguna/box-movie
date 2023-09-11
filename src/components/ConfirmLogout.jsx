@@ -5,7 +5,7 @@ export const ConfirmLogout = ({ closeModalLoggingOut }) => {
     <>
       <div className="fixed left-1/2 top-1/2 z-[52] flex aspect-[16/10] w-full max-w-xs -translate-x-1/2 -translate-y-1/2 transform flex-col items-center justify-center space-y-8 rounded-md border border-gray-400/30 bg-black">
         <h1 className="text-md font-medium">
-          Are you sure you want to logout?
+          Are you sure you want to log out?
         </h1>
         <div className="flex space-x-8">
           <button

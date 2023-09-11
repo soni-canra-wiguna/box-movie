@@ -54,9 +54,9 @@ const UserProfile = ({ user, isProfile, setIsProfile }) => {
             <SignOutButton
               whileTap={{ scale: 0.9 }}
               onClick={() => setIsProfile(false)}
-              className=" duration-400 w-full rounded-sm px-3 py-2 pr-8 capitalize transition ease-in hover:bg-gray-400/30"
+              className=" duration-400 w-full rounded-sm px-3 py-2 pr-8 transition ease-in hover:bg-gray-400/30"
             >
-              logout
+              log out
             </SignOutButton>
             <FiLogOut className="absolute right-[75px] top-3 aspect-square h-4 text-white" />
           </div>
@@ -112,9 +112,9 @@ export const UserProfileMobile = ({
           <div className="relative w-full">
             <SignOutButton
               onClick={() => setIsProfileMobile(false)}
-              className=" duration-400 w-full rounded-sm px-3 py-2 pr-8 capitalize transition ease-in hover:bg-gray-400/30"
+              className=" duration-400 w-full rounded-sm px-3 py-2 pr-8 transition ease-in hover:bg-gray-400/30"
             >
-              logout
+              log out
             </SignOutButton>
             <FiLogOut className="absolute right-[64px] top-3 aspect-square h-4 text-white" />
           </div>

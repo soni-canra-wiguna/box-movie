@@ -33,15 +33,15 @@ const ProfilePage = () => {
             />
           </div>
           <h1
-            className={`inline-block text-2xl font-semibold md:text-3xl ${textGradient}`}
+            className={`inline-block text-2xl font-semibold md:text-3xl ${textGradient} capitalize`}
           >
-            {user?.fullName || user?.firstName}
+            {user?.fullName || user?.firstName || "someone"}
           </h1>
           <button
             onClick={openModalLoggingOut}
             className={`group relative rounded-md border border-gray-400/30 py-2 pl-2 pr-7 ${bgGradientHover}`}
           >
-            <span>logout</span>
+            <span>log out</span>
             <FiLogOut className="absolute right-2 top-3 aspect-square h-4 text-white" />
           </button>
           {isActive && (
