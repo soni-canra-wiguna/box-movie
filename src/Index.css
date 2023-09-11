@@ -65,6 +65,10 @@ input {
   margin: 0 auto;
 }
 
+.shadow__to-top {
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+
 .swiper-slide {
   /* @apply aspect-video mx-[10px] flex justify-center items-center */
   /* min-width: 300px;
